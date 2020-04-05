@@ -24,7 +24,7 @@ RUN wget $(grepurl -r 'zip$' -a http://stanfordnlp.github.io/CoreNLP/) && \
 # This command get's the first model file (at least for English there are two)
 # and extracts its property file.
 WORKDIR /opt/corenlp
-RUN wget $(grepurl -r 'english.*jar$' -a http://stanfordnlp.github.io/CoreNLP | head -n 1)
+RUN wget $(grepurl -r 'arabic.*jar$' -a http://stanfordnlp.github.io/CoreNLP | head -n 1)
 
 
 # only keep the things we need to run and test CoreNLP
@@ -42,4 +42,7 @@ ENV JAVA_XMX 4g
 ENV PORT 9000
 EXPOSE $PORT
 
-CMD java -Xmx$JAVA_XMX -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer -port 9000 -timeout 15000
+
+CMD java -Xmx$JAVA_XMX -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer -serverProperties StanfordCoreNLP-arabic.properties \
+    -preload tokenize,ssplit,pos,parse \
+    -status_port 9005  -port 9005 -timeout 1500
